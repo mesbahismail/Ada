@@ -1,0 +1,804 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "ada",
+  "homepage": "https://github.com/mesbahismail/Ada",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:theme",
+      "title": "Ada Theme",
+      "description": "Fuchsia/plum light & dark theme with gradient backdrop, glow and bubble tokens.",
+      "dependencies": [
+        "tw-animate-css"
+      ],
+      "cssVars": {
+        "theme": {
+          "font-heading": "var(--font-heading)",
+          "color-surface": "var(--surface)",
+          "color-surface-foreground": "var(--surface-foreground)",
+          "color-bubble": "var(--bubble)",
+          "color-bubble-foreground": "var(--bubble-foreground)",
+          "animate-wave": "wave 1.1s ease-in-out infinite"
+        },
+        "light": {
+          "radius": "0.75rem",
+          "background": "oklch(0.955 0.018 315)",
+          "foreground": "oklch(0.22 0.06 315)",
+          "card": "oklch(1 0 0 / 70%)",
+          "card-foreground": "oklch(0.22 0.06 315)",
+          "popover": "oklch(0.99 0.006 315)",
+          "popover-foreground": "oklch(0.22 0.06 315)",
+          "primary": "oklch(0.58 0.27 320)",
+          "primary-foreground": "oklch(0.99 0.005 320)",
+          "secondary": "oklch(0.35 0.12 315 / 7%)",
+          "secondary-foreground": "oklch(0.25 0.07 315)",
+          "muted": "oklch(0.35 0.12 315 / 6%)",
+          "muted-foreground": "oklch(0.5 0.05 315)",
+          "accent": "oklch(0.58 0.27 320 / 10%)",
+          "accent-foreground": "oklch(0.3 0.12 318)",
+          "destructive": "oklch(0.577 0.245 27.325)",
+          "border": "oklch(0.35 0.12 315 / 13%)",
+          "input": "oklch(0.35 0.12 315 / 16%)",
+          "ring": "oklch(0.58 0.27 320 / 55%)",
+          "chart-1": "oklch(0.58 0.27 320)",
+          "chart-2": "oklch(0.52 0.24 300)",
+          "chart-3": "oklch(0.7 0.18 330)",
+          "chart-4": "oklch(0.45 0.18 290)",
+          "chart-5": "oklch(0.8 0.1 320)",
+          "sidebar": "oklch(1 0 0 / 40%)",
+          "sidebar-foreground": "oklch(0.28 0.06 315)",
+          "sidebar-primary": "oklch(0.58 0.27 320)",
+          "sidebar-primary-foreground": "oklch(0.99 0.005 320)",
+          "sidebar-accent": "oklch(0.35 0.12 315 / 7%)",
+          "sidebar-accent-foreground": "oklch(0.22 0.06 315)",
+          "sidebar-border": "oklch(0.35 0.12 315 / 10%)",
+          "sidebar-ring": "oklch(0.58 0.27 320 / 55%)",
+          "surface": "oklch(1 0 0 / 55%)",
+          "surface-foreground": "oklch(0.22 0.06 315)",
+          "bubble": "oklch(0.58 0.27 320)",
+          "bubble-foreground": "oklch(0.99 0.005 320)",
+          "backdrop": "radial-gradient(90% 70% at 90% 105%, oklch(0.8 0.15 318 / 70%) 0%, transparent 65%), radial-gradient(60% 50% at 0% 0%, oklch(0.93 0.05 300 / 90%) 0%, transparent 70%), linear-gradient(160deg, oklch(0.97 0.012 315) 0%, oklch(0.92 0.04 318) 100%)",
+          "bubble-gradient": "linear-gradient(135deg, oklch(0.62 0.27 322) 0%, oklch(0.54 0.26 308) 100%)",
+          "orb-gradient": "radial-gradient(circle at 35% 30%, oklch(0.78 0.2 320) 0%, oklch(0.6 0.28 318) 45%, oklch(0.42 0.22 300) 100%)",
+          "glow": "0 0 40px 4px oklch(0.6 0.28 320 / 40%), 0 0 90px 20px oklch(0.6 0.28 320 / 18%)"
+        },
+        "dark": {
+          "background": "oklch(0.13 0.025 315)",
+          "foreground": "oklch(0.96 0.012 320)",
+          "card": "oklch(0.26 0.06 318 / 50%)",
+          "card-foreground": "oklch(0.96 0.012 320)",
+          "popover": "oklch(0.19 0.045 316)",
+          "popover-foreground": "oklch(0.96 0.012 320)",
+          "primary": "oklch(0.62 0.28 320)",
+          "primary-foreground": "oklch(0.99 0.005 320)",
+          "secondary": "oklch(1 0 0 / 7%)",
+          "secondary-foreground": "oklch(0.94 0.015 320)",
+          "muted": "oklch(1 0 0 / 6%)",
+          "muted-foreground": "oklch(0.74 0.04 315)",
+          "accent": "oklch(1 0 0 / 8%)",
+          "accent-foreground": "oklch(0.96 0.012 320)",
+          "destructive": "oklch(0.704 0.191 22.216)",
+          "border": "oklch(1 0 0 / 9%)",
+          "input": "oklch(1 0 0 / 12%)",
+          "ring": "oklch(0.62 0.28 320 / 60%)",
+          "chart-1": "oklch(0.62 0.28 320)",
+          "chart-2": "oklch(0.55 0.25 300)",
+          "chart-3": "oklch(0.72 0.19 330)",
+          "chart-4": "oklch(0.48 0.2 290)",
+          "chart-5": "oklch(0.82 0.1 320)",
+          "sidebar": "oklch(0.11 0.025 315 / 55%)",
+          "sidebar-foreground": "oklch(0.88 0.02 318)",
+          "sidebar-primary": "oklch(0.62 0.28 320)",
+          "sidebar-primary-foreground": "oklch(0.99 0.005 320)",
+          "sidebar-accent": "oklch(1 0 0 / 7%)",
+          "sidebar-accent-foreground": "oklch(0.96 0.012 320)",
+          "sidebar-border": "oklch(1 0 0 / 8%)",
+          "sidebar-ring": "oklch(0.62 0.28 320 / 60%)",
+          "surface": "oklch(0.2 0.045 316 / 55%)",
+          "surface-foreground": "oklch(0.96 0.012 320)",
+          "bubble": "oklch(0.62 0.28 320)",
+          "bubble-foreground": "oklch(0.99 0.005 320)",
+          "backdrop": "radial-gradient(90% 70% at 90% 105%, oklch(0.42 0.22 318 / 75%) 0%, transparent 65%), radial-gradient(60% 50% at 0% 0%, oklch(0.26 0.1 300 / 45%) 0%, transparent 70%), linear-gradient(160deg, oklch(0.14 0.03 315) 0%, oklch(0.17 0.06 318) 100%)",
+          "bubble-gradient": "linear-gradient(135deg, oklch(0.62 0.28 322) 0%, oklch(0.52 0.26 308) 100%)",
+          "orb-gradient": "radial-gradient(circle at 35% 30%, oklch(0.78 0.2 320) 0%, oklch(0.6 0.28 318) 45%, oklch(0.38 0.2 300) 100%)",
+          "glow": "0 0 40px 6px oklch(0.6 0.28 320 / 55%), 0 0 110px 30px oklch(0.6 0.28 320 / 25%)"
+        }
+      },
+      "css": {
+        "@keyframes wave": {
+          "0%, 100%": {
+            "transform": "scaleY(0.35)"
+          },
+          "50%": {
+            "transform": "scaleY(1)"
+          }
+        },
+        "@utility bg-backdrop": {
+          "background-color": "var(--background)",
+          "background-image": "var(--backdrop)",
+          "background-attachment": "fixed"
+        },
+        "@utility bg-bubble-gradient": {
+          "background-image": "var(--bubble-gradient)"
+        },
+        "@utility bg-orb": {
+          "background-image": "var(--orb-gradient)"
+        },
+        "@utility shadow-glow": {
+          "box-shadow": "var(--glow)"
+        },
+        "@layer base": {
+          "body": {
+            "background-image": "var(--backdrop)",
+            "background-attachment": "fixed"
+          }
+        }
+      },
+      "categories": [
+        "theme"
+      ]
+    },
+    {
+      "name": "font-heading-instrument-serif",
+      "type": "registry:font",
+      "title": "Instrument Serif (Heading)",
+      "description": "Editorial serif used for Ada headings.",
+      "font": {
+        "family": "'Instrument Serif', serif",
+        "provider": "google",
+        "import": "Instrument_Serif",
+        "variable": "--font-heading",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/instrument-serif"
+      }
+    },
+    {
+      "name": "data",
+      "type": "registry:lib",
+      "title": "Ada Mock Data",
+      "description": "Typed navigation, conversations, voices, prompts and plans used by the Ada blocks.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/lib/ada-data.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "logo",
+      "type": "registry:component",
+      "title": "Ada Logo",
+      "description": "Ada bird mark, wordmark and glowing hero orb.",
+      "registryDependencies": [
+        "@ada/theme"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/ada-logo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:component",
+      "title": "Theme Toggle",
+      "description": "next-themes provider and a light/dark toggle button.",
+      "dependencies": [
+        "next-themes",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/theme-provider.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/components/ada/mode-toggle.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "docs": "Wrap your root layout with <ThemeProvider attribute=\"class\" defaultTheme=\"dark\" enableSystem disableTransitionOnChange>."
+    },
+    {
+      "name": "generated-art",
+      "type": "registry:component",
+      "title": "Generated Art",
+      "description": "Deterministic SVG artwork placeholders for generated images and videos.",
+      "registryDependencies": [
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/generated-art.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "audio-player",
+      "type": "registry:component",
+      "title": "Audio Player",
+      "description": "Waveform audio player and animated recording waveform.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@ada/theme"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/audio-player.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "prompt-input",
+      "type": "registry:component",
+      "title": "Prompt Input",
+      "description": "AI composer with attachments, voice recording, toolbar and actions slots.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "input-group",
+        "tooltip",
+        "@ada/audio-player"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/prompt-input.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "media",
+      "type": "registry:component",
+      "title": "Media",
+      "description": "Prompt cards, carousel, image grid and video player for generated media.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "slider",
+        "@ada/generated-art",
+        "@ada/audio-player",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/media.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chat-message",
+      "type": "registry:component",
+      "title": "Chat Message",
+      "description": "User and assistant bubbles for text, audio, voiceover, images and video, with actions.",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "button",
+        "spinner",
+        "sonner",
+        "@ada/logo",
+        "@ada/audio-player",
+        "@ada/media",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/chat-message.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "suggestions",
+      "type": "registry:component",
+      "title": "Suggestions",
+      "description": "Welcome hero, prompt suggestion cards and follow-up chips.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "@ada/logo",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/suggestions.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "voice-picker",
+      "type": "registry:component",
+      "title": "Voice Picker",
+      "description": "Voice cards, voice selection dialog, voice settings toolbar and script import dialog.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "pagination",
+        "select",
+        "tabs",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/voice-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "auth-forms",
+      "type": "registry:component",
+      "title": "Auth Forms",
+      "description": "Login and sign-up forms plus the \"What's new\" panel.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "field",
+        "input-group",
+        "separator",
+        "spinner",
+        "@ada/logo",
+        "@ada/theme-toggle"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/auth-forms.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App Shell",
+      "description": "Collapsible sidebar, page header and recent-history sheet wrapping the Ada app.",
+      "dependencies": [
+        "lucide-react",
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "sidebar",
+        "avatar",
+        "button",
+        "dropdown-menu",
+        "input-group",
+        "sheet",
+        "@ada/theme",
+        "@ada/logo",
+        "@ada/theme-toggle",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/app-sidebar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/components/ada/page-header.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/components/ada/recent-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/blocks/app-shell/layout.tsx",
+          "type": "registry:file",
+          "target": "app/(ada)/layout.tsx"
+        }
+      ],
+      "categories": [
+        "sidebar",
+        "application"
+      ]
+    },
+    {
+      "name": "workspace",
+      "type": "registry:block",
+      "title": "AI Workspace",
+      "description": "Shared conversation screen powering search, chat, voiceover, image and video.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "@ada/app-shell",
+        "@ada/chat-message",
+        "@ada/media",
+        "@ada/prompt-input",
+        "@ada/suggestions",
+        "@ada/voice-picker",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/ai-workspace.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/components/ada/conversation-page.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/hooks/use-ada-chat.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "categories": [
+        "ai",
+        "chat"
+      ]
+    },
+    {
+      "name": "search",
+      "type": "registry:block",
+      "title": "Ada Search",
+      "description": "AI search with suggestions, answers, voice notes and follow-ups.",
+      "registryDependencies": [
+        "@ada/workspace"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/search/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/search/page.tsx"
+        },
+        {
+          "path": "src/registry/ada/blocks/search/conversation-page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/search/[id]/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "search"
+      ]
+    },
+    {
+      "name": "chat",
+      "type": "registry:block",
+      "title": "Ada AI Chat",
+      "description": "Conversational assistant screen.",
+      "registryDependencies": [
+        "@ada/workspace"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/chat/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/chat/page.tsx"
+        },
+        {
+          "path": "src/registry/ada/blocks/chat/conversation-page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/chat/[id]/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "chat"
+      ]
+    },
+    {
+      "name": "voiceover",
+      "type": "registry:block",
+      "title": "Ada Voiceover",
+      "description": "Text-to-speech studio with voice picker and prosody controls.",
+      "registryDependencies": [
+        "@ada/workspace"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/voiceover/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/voiceover/page.tsx"
+        },
+        {
+          "path": "src/registry/ada/blocks/voiceover/conversation-page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/voiceover/[id]/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "voiceover"
+      ]
+    },
+    {
+      "name": "image",
+      "type": "registry:block",
+      "title": "Ada Image",
+      "description": "Image generation with prompt gallery and 2×2 results.",
+      "registryDependencies": [
+        "@ada/workspace"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/image/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/image/page.tsx"
+        },
+        {
+          "path": "src/registry/ada/blocks/image/conversation-page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/image/[id]/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "image"
+      ]
+    },
+    {
+      "name": "video",
+      "type": "registry:block",
+      "title": "Ada Video",
+      "description": "Video generation with prompt gallery and player.",
+      "registryDependencies": [
+        "@ada/workspace"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/video/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/video/page.tsx"
+        },
+        {
+          "path": "src/registry/ada/blocks/video/conversation-page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/video/[id]/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "video"
+      ]
+    },
+    {
+      "name": "image-editor",
+      "type": "registry:block",
+      "title": "Ada Image Editor",
+      "description": "Full-screen image editor with upscale, sampling, masking and color controls.",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "collapsible",
+        "dropdown-menu",
+        "label",
+        "slider",
+        "switch",
+        "sidebar",
+        "toggle-group",
+        "sonner",
+        "@ada/app-shell",
+        "@ada/generated-art",
+        "@ada/prompt-input"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/image-editor.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/blocks/image-editor/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/image/edit/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "image",
+        "editor"
+      ]
+    },
+    {
+      "name": "music",
+      "type": "registry:block",
+      "title": "Ada Music (Coming soon)",
+      "description": "Coming-soon empty state with a notify-me action.",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "button",
+        "empty",
+        "sonner",
+        "@ada/app-shell"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/coming-soon.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/blocks/music/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/music/page.tsx"
+        }
+      ],
+      "categories": [
+        "empty-state"
+      ]
+    },
+    {
+      "name": "pricing",
+      "type": "registry:block",
+      "title": "Ada Pricing",
+      "description": "Three-tier pricing with monthly/yearly toggle.",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "label",
+        "switch",
+        "sonner",
+        "@ada/app-shell",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/pricing-plans.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/blocks/pricing/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/pricing/page.tsx"
+        }
+      ],
+      "categories": [
+        "pricing"
+      ]
+    },
+    {
+      "name": "settings",
+      "type": "registry:block",
+      "title": "Ada Settings",
+      "description": "Organization, members, billing, API keys and logs settings.",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "card",
+        "field",
+        "input",
+        "input-group",
+        "select",
+        "separator",
+        "tabs",
+        "sonner",
+        "@ada/app-shell"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/settings-panels.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/blocks/settings/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/settings/page.tsx"
+        }
+      ],
+      "categories": [
+        "settings"
+      ]
+    },
+    {
+      "name": "login",
+      "type": "registry:block",
+      "title": "Ada Login",
+      "description": "Login screen with username/password and Google sign-in.",
+      "registryDependencies": [
+        "@ada/auth-forms",
+        "@ada/theme"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/login/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/login/page.tsx"
+        }
+      ],
+      "categories": [
+        "authentication",
+        "login"
+      ]
+    },
+    {
+      "name": "signup",
+      "type": "registry:block",
+      "title": "Ada Sign up",
+      "description": "Two-column sign-up screen with a \"What's new\" panel.",
+      "registryDependencies": [
+        "@ada/auth-forms",
+        "@ada/theme"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/blocks/signup/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/signup/page.tsx"
+        }
+      ],
+      "categories": [
+        "authentication",
+        "signup"
+      ]
+    },
+    {
+      "name": "app",
+      "type": "registry:item",
+      "title": "Ada — AI App Template",
+      "description": "Everything: theme, fonts, app shell and all Ada screens (search, chat, voiceover, image, image editor, video, music, pricing, settings, login, sign-up).",
+      "registryDependencies": [
+        "@ada/theme",
+        "@ada/font-heading-instrument-serif",
+        "@ada/app-shell",
+        "@ada/search",
+        "@ada/chat",
+        "@ada/voiceover",
+        "@ada/image",
+        "@ada/image-editor",
+        "@ada/video",
+        "@ada/music",
+        "@ada/pricing",
+        "@ada/settings",
+        "@ada/login",
+        "@ada/signup"
+      ],
+      "docs": "Wrap your root layout with ThemeProvider (from components/ada/theme-provider), TooltipProvider and <Toaster />. See the README for the full layout.",
+      "categories": [
+        "template",
+        "ai"
+      ]
+    }
+  ]
+}
