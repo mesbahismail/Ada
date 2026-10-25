@@ -1,12 +1,15 @@
 "use client"
 
 import * as React from "react"
+import { modeRoutes } from "@/registry/ada/lib/ada-data"
+import { createConversation, setConversationPending, updateMessages, useConversations } from "@/registry/ada/hooks/use-conversations"
 
 import type {
   AdaMode,
   ArtScene,
   AssistantMessage,
   Message,
+  Conversation,
 } from "@/registry/ada/lib/ada-data"
 
 const scenes: ArtScene[] = ["sunset", "mountains", "city", "bloom", "forest", "aurora", "ocean", "neon"]
@@ -89,67 +92,68 @@ function createReply(mode: AdaMode, prompt: string, voice?: string): AssistantMe
 
 type UseAdaChatOptions = {
   mode: AdaMode
-  initialMessages?: Message[]
+  conversation?: Conversation
   voice?: string
 }
 
-function useAdaChat({ mode, initialMessages = [], voice }: UseAdaChatOptions) {
-  const [messages, setMessages] = React.useState<Message[]>(initialMessages)
-  const [pending, setPending] = React.useState<string | null>(null)
-  const timers = React.useRef<number[]>([])
+function useAdaChat({ mode, conversation: initialConversation, voice }: UseAdaChatOptions) {
+  const { items, pending: pendingById } = useConversations()
+  const [conversationId, setConversationId] = React.useState(initialConversation?.id)
+  const conversation = items.find((item) => item.id === conversationId)
+  const messages = conversation?.messages ?? []
+  const pending = conversationId ? pendingById[conversationId] ?? null : null
 
-  React.useEffect(() => {
-    const active = timers.current
-    return () => active.forEach((timer) => window.clearTimeout(timer))
-  }, [])
+  function respond(id: string, prompt: string) {
+    setConversationPending(id, pendingLabels[mode])
+    // Replies update the saved conversation even if the user opens another chat.
+    window.setTimeout(() => {
+      updateMessages(id, (previous) => [...previous, createReply(mode, prompt, voice)])
+      setConversationPending(id)
+    }, mode === "search" || mode === "chat" ? 1200 : 2200)
+  }
 
-  const respond = React.useCallback(
-    (prompt: string) => {
-      setPending(pendingLabels[mode])
-      const delay = mode === "search" || mode === "chat" ? 1200 : 2200
-      const timer = window.setTimeout(() => {
-        setMessages((prev) => [...prev, createReply(mode, prompt, voice)])
-        setPending(null)
-      }, delay)
-      timers.current.push(timer)
-    },
-    [mode, voice]
-  )
+  function append(message: Message, prompt: string) {
+    if (pending) return
+    let id = conversationId
+    if (!id || !conversation) {
+      const created = createConversation(mode, message)
+      id = created.id
+      setConversationId(id)
+      window.history.replaceState(null, "", `${modeRoutes[mode]}/${id}`)
+    } else {
+      updateMessages(id, (previous) => [...previous, message])
+    }
+    respond(id, prompt)
+  }
 
-  const send = React.useCallback(
-    (prompt: string) => {
-      setMessages((prev) => [
-        ...prev,
-        { id: createId(), role: "user", kind: "text", label: userLabels[mode], content: prompt },
-      ])
-      respond(prompt)
-    },
-    [mode, respond]
-  )
+  function send(prompt: string) {
+    const content = prompt.trim()
+    if (!content) return
+    append({ id: createId(), role: "user", kind: "text", label: userLabels[mode], content }, content)
+  }
 
-  const sendAudio = React.useCallback(
-    (seconds: number) => {
-      setMessages((prev) => [...prev, { id: createId(), role: "user", kind: "audio", duration: seconds }])
-      respond("Voice note")
-    },
-    [respond]
-  )
+  function sendAudio(seconds: number) {
+    append({ id: createId(), role: "user", kind: "audio", duration: seconds }, "Voice note")
+  }
 
-  const regenerate = React.useCallback(
-    (messageId: string) => {
-      const index = messages.findIndex((message) => message.id === messageId)
-      const previous = messages
-        .slice(0, index)
-        .reverse()
-        .find((message) => message.role === "user")
-      const prompt = previous && previous.kind === "text" ? previous.content : "Voice note"
-      setMessages((prev) => prev.filter((message) => message.id !== messageId))
-      respond(prompt)
-    },
-    [messages, respond]
-  )
+  function regenerate(messageId: string) {
+    if (!conversationId || pending) return
+    const index = messages.findIndex((message) => message.id === messageId)
+    if (index < 0 || messages[index].role !== "assistant") return
+    const previous = messages.slice(0, index).reverse().find((message) => message.role === "user")
+    const prompt = previous?.kind === "text" ? previous.content : "Voice note"
+    updateMessages(conversationId, (previous) => previous.slice(0, index))
+    respond(conversationId, prompt)
+  }
 
-  return { messages, pending, send, sendAudio, regenerate }
+  function startNew() {
+    const created = createConversation(mode)
+    setConversationId(created.id)
+    return created
+  }
+
+  return { messages, pending, send, sendAudio, regenerate, conversation, startNew,
+    reset: () => setConversationId(undefined) }
 }
 
 export { useAdaChat }

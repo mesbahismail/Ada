@@ -1,25 +1,10 @@
-import {
-  ConversationPage,
-  conversationMetadata,
-  conversationParams,
-} from "@/registry/ada/components/ada/conversation-page"
+import { redirect } from "next/navigation"
 
-export function generateMetadata({
+export default async function SearchConversationPage({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
-  return conversationMetadata(params)
-}
-
-export function generateStaticParams() {
-  return conversationParams("search")
-}
-
-export default function SearchConversationPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  return <ConversationPage mode="search" params={params} />
+  const { id } = await params
+  redirect(`/chat/${encodeURIComponent(id)}`)
 }

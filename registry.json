@@ -386,22 +386,25 @@
       "name": "app-shell",
       "type": "registry:block",
       "title": "App Shell",
-      "description": "Collapsible sidebar, page header and recent-history sheet wrapping the Ada app.",
+      "description": "Collapsible sidebar with saved conversation history, instructions and account theme controls.",
       "dependencies": [
         "lucide-react",
-        "next-themes"
+        "next-themes",
+        "sonner"
       ],
       "registryDependencies": [
         "sidebar",
         "avatar",
         "button",
         "dropdown-menu",
-        "input-group",
-        "sheet",
         "@ada/theme",
         "@ada/logo",
         "@ada/theme-toggle",
-        "@ada/data"
+        "@ada/data",
+        "sonner",
+        "dialog",
+        "label",
+        "textarea"
       ],
       "files": [
         {
@@ -413,13 +416,13 @@
           "type": "registry:component"
         },
         {
-          "path": "src/registry/ada/components/ada/recent-sheet.tsx",
-          "type": "registry:component"
-        },
-        {
           "path": "src/registry/ada/blocks/app-shell/layout.tsx",
           "type": "registry:file",
           "target": "app/(ada)/layout.tsx"
+        },
+        {
+          "path": "src/registry/ada/hooks/use-conversations.ts",
+          "type": "registry:hook"
         }
       ],
       "categories": [
@@ -457,6 +460,10 @@
         {
           "path": "src/registry/ada/hooks/use-ada-chat.ts",
           "type": "registry:hook"
+        },
+        {
+          "path": "src/registry/ada/components/ada/saved-conversation.tsx",
+          "type": "registry:component"
         }
       ],
       "categories": [
@@ -467,10 +474,10 @@
     {
       "name": "search",
       "type": "registry:block",
-      "title": "Ada Search",
-      "description": "AI search with suggestions, answers, voice notes and follow-ups.",
+      "title": "Ada Search (merged into Chat)",
+      "description": "Compatibility redirects from Search to the unified AI Chat workspace.",
       "registryDependencies": [
-        "@ada/workspace"
+        "@ada/chat"
       ],
       "files": [
         {
@@ -543,7 +550,7 @@
       "name": "image",
       "type": "registry:block",
       "title": "Ada Image",
-      "description": "Image generation with prompt gallery and 2×2 results.",
+      "description": "Image generation with prompt gallery and 2\u00d72 results.",
       "registryDependencies": [
         "@ada/workspace"
       ],
@@ -776,7 +783,7 @@
     {
       "name": "app",
       "type": "registry:item",
-      "title": "Ada — AI App Template",
+      "title": "Ada \u2014 AI App Template",
       "description": "Everything: theme, fonts, app shell and all Ada screens (search, chat, voiceover, image, image editor, video, music, pricing, settings, login, sign-up).",
       "registryDependencies": [
         "@ada/theme",

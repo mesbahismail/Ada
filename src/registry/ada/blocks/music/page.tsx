@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function MusicPage() {
   return (
     <div className="flex h-svh min-h-0 flex-col">
-      <PageHeader title="Music" showRecent={false} />
+      <PageHeader title="Music" />
       <div className="flex flex-1 items-center justify-center p-6">
         <ComingSoon icon={<MusicIcon />} />
       </div>

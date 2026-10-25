@@ -14,8 +14,8 @@ Nova preset) · lucide-react · next-themes · sonner.
 | Route | Block | What it shows |
 | --- | --- | --- |
 | `/login`, `/signup` | `login`, `signup` | Auth forms, Google button, "What's new" panel |
-| `/search`, `/search/[id]` | `search` | Hero, suggestion cards, answers, voice notes, follow-ups |
-| `/chat`, `/chat/[id]` | `chat` | Conversational assistant |
+| `/chat`, `/chat/[id]` | `chat` | Unified chat and search, suggestion cards, answers, voice notes, follow-ups |
+| `/search`, `/search/[id]` | `search` | Redirects to Chat for existing links |
 | `/voiceover`, `/voiceover/[id]` | `voiceover` | Voice grid, voice picker dialog, prosody toolbar, script import |
 | `/image`, `/image/[id]` | `image` | Prompt gallery, 2×2 results, "Surprise me" |
 | `/image/edit` | `image-editor` | Upscale / adjust / edit panels, aspect ratio, sampling, sliders |
@@ -23,6 +23,10 @@ Nova preset) · lucide-react · next-themes · sonner.
 | `/music` | `music` | Coming-soon empty state |
 | `/pricing` | `pricing` | Three plans with monthly/yearly toggle |
 | `/settings` | `settings` | Organization, members, billing, API keys, logs |
+
+Conversations are saved in this browser using local storage. The first sent message
+creates a chat and its URL; the sidebar lets you reopen, duplicate, export as JSON,
+or delete it. New chat creates and opens a saved blank conversation, named from its first message.
 
 Replies are mocked by `hooks/use-ada-chat.ts`, and images/videos use the
 `GeneratedArt` SVG placeholder, so the template runs with no API keys. Swap them

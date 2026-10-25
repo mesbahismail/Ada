@@ -65,10 +65,11 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
   const router = useRouter()
   const [voice, setVoice] = React.useState(voices[4])
   const [importOpen, setImportOpen] = React.useState(false)
+  const [draftKey, setDraftKey] = React.useState(0)
   const scrollRef = React.useRef<HTMLDivElement>(null)
-  const { messages, pending, send, sendAudio, regenerate } = useAdaChat({
+  const { messages, pending, send, sendAudio, regenerate, conversation: savedConversation, startNew } = useAdaChat({
     mode,
-    initialMessages: conversation?.messages,
+    conversation,
     voice: voice.name,
   })
 
@@ -78,13 +79,25 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
 
   const empty = messages.length === 0
   const hasAnswer = messages.some((message) => message.role === "assistant")
-  const followUps = conversation?.followUps ?? defaultFollowUps[mode]
+  const followUps = savedConversation?.followUps ?? defaultFollowUps[mode]
+
+  React.useEffect(() => {
+    document.title = `${savedConversation?.title ?? newTitles[mode]} · Ada`
+  }, [savedConversation?.title, mode])
+
+  function newConversation() {
+    const created = startNew()
+    setDraftKey((key) => key + 1)
+    router.push(`${modeRoutes[mode]}/${created.id}`)
+  }
 
   return (
     <div className="flex h-svh min-h-0 flex-col">
       <PageHeader
-        title={conversation?.title ?? newTitles[mode]}
-        newHref={empty ? undefined : modeRoutes[mode]}
+        title={savedConversation?.title ?? newTitles[mode]}
+        newHref={modeRoutes[mode]}
+        onNew={newConversation}
+        newLabel={mode === "chat" ? "New chat" : newTitles[mode]}
       />
       <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-4 py-6">
@@ -95,7 +108,7 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
               </div>
               {(mode === "search" || mode === "chat") && (
                 <PromptSuggestions
-                  items={mode === "search" ? searchSuggestions : chatSuggestions}
+                  items={[...chatSuggestions.slice(0, 2), ...searchSuggestions.slice(0, 2)]}
                   onSelect={send}
                 />
               )}
@@ -136,6 +149,7 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
       </div>
       <div className="shrink-0 px-4 pt-2 pb-3">
         <PromptInput
+          key={draftKey}
           placeholder={placeholders[mode]}
           disabled={Boolean(pending)}
           onSubmit={send}

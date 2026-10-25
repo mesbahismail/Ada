@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 
-import { AiWorkspace } from "@/registry/ada/components/ada/ai-workspace"
+import { SavedConversation } from "@/registry/ada/components/ada/saved-conversation"
 import { conversations, getConversation, type AdaMode } from "@/registry/ada/lib/ada-data"
 
 type ConversationPageProps = {
@@ -12,13 +11,7 @@ type ConversationPageProps = {
 /** Server helper that loads a conversation by id and renders the workspace. */
 async function ConversationPage({ mode, params }: ConversationPageProps) {
   const { id } = await params
-  const conversation = getConversation(id)
-
-  if (!conversation || conversation.mode !== mode) {
-    notFound()
-  }
-
-  return <AiWorkspace key={id} mode={mode} conversation={conversation} />
+  return <SavedConversation key={id} mode={mode} id={id} />
 }
 
 function conversationParams(mode: AdaMode) {

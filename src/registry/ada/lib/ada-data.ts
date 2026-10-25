@@ -4,7 +4,6 @@ import {
   ImageIcon,
   MessageSquareIcon,
   MusicIcon,
-  SearchIcon,
   type LucideIcon,
 } from "lucide-react"
 
@@ -28,7 +27,6 @@ export type NavItem = {
 }
 
 export const navMain: NavItem[] = [
-  { title: "Search", href: "/search", icon: SearchIcon },
   { title: "AI Chat", href: "/chat", icon: MessageSquareIcon },
   { title: "Voiceover", href: "/voiceover", icon: AudioLinesIcon },
   { title: "Image", href: "/image", icon: ImageIcon },
@@ -88,6 +86,7 @@ export type Conversation = {
   mode: AdaMode
   title: string
   date: string
+  updatedAt?: string
   messages: Message[]
   followUps?: string[]
 }
@@ -116,7 +115,8 @@ const achieveAnswer = `Start small and make it concrete. Pick one value that mat
 export const conversations: Conversation[] = [
   {
     id: "renaissance-painters",
-    mode: "search",
+    updatedAt: new Date(Date.now() - 120000).toISOString(),
+    mode: "chat",
     title: "Renaissance painters",
     date: "Today",
     messages: [
@@ -138,6 +138,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: "meaning-of-life",
+    updatedAt: new Date(Date.now() - 3600000).toISOString(),
     mode: "chat",
     title: "Meaning of life",
     date: "Today",
@@ -162,6 +163,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: "milkshake-advertising",
+    updatedAt: new Date(Date.now() - 86400000).toISOString(),
     mode: "voiceover",
     title: "Milkshake advertising",
     date: "Yesterday",
@@ -185,6 +187,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: "majestic-peacock",
+    updatedAt: new Date(Date.now() - 172800000).toISOString(),
     mode: "image",
     title: "Majestic peacock",
     date: "Yesterday",
@@ -215,6 +218,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: "panda-video",
+    updatedAt: new Date(Date.now() - 604800000).toISOString(),
     mode: "video",
     title: "Panda video",
     date: "Oct 18",
@@ -243,7 +247,8 @@ export const conversations: Conversation[] = [
   },
   {
     id: "weather-in-madrid",
-    mode: "search",
+    updatedAt: new Date(Date.now() - 777600000).toISOString(),
+    mode: "chat",
     title: "Weather in Madrid",
     date: "Oct 16",
     messages: [
@@ -266,6 +271,7 @@ export const conversations: Conversation[] = [
   },
   {
     id: "economy-changes",
+    updatedAt: new Date(Date.now() - 2678400000).toISOString(),
     mode: "chat",
     title: "Changes of economy in the United States",
     date: "Oct 12",
@@ -293,7 +299,7 @@ export function getConversation(id: string) {
 }
 
 export const modeRoutes: Record<AdaMode, string> = {
-  search: "/search",
+  search: "/chat",
   chat: "/chat",
   voiceover: "/voiceover",
   image: "/image",
@@ -468,3 +474,28 @@ export const plans: Plan[] = [
     features: features(10),
   },
 ]
+
+/** Compact time since the last message, including histories saved before timestamps. */
+export function formatConversationAge(conversation: Pick<Conversation, "updatedAt" | "date">, now = Date.now()) {
+  let updated = conversation.updatedAt ? Date.parse(conversation.updatedAt) : NaN
+  if (!Number.isFinite(updated)) {
+    const date = new Date(now)
+    date.setHours(0, 0, 0, 0)
+    if (conversation.date === "Yesterday") date.setDate(date.getDate() - 1)
+    else if (conversation.date !== "Today") {
+      const parsed = new Date(`${conversation.date}, ${date.getFullYear()}`)
+      if (parsed.getTime() > now) parsed.setFullYear(parsed.getFullYear() - 1)
+      updated = parsed.getTime()
+    }
+    if (!Number.isFinite(updated)) updated = date.getTime()
+  }
+  const minutes = Math.max(0, Math.floor((now - updated) / 60_000))
+  if (minutes < 60) return `${minutes}min`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h`
+  const days = Math.floor(hours / 24)
+  if (days < 30) return `${days}d`
+  const months = Math.floor(days / 30)
+  if (months < 12) return `${months}m`
+  return `${Math.floor(days / 365) || 1}y`
+}

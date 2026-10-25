@@ -2,19 +2,16 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   ChevronsUpDownIcon,
   CreditCardIcon,
   GemIcon,
   LogOutIcon,
-  MonitorIcon,
-  MoonIcon,
+  MoreHorizontalIcon,
   SettingsIcon,
-  SunIcon,
   UserIcon,
 } from "lucide-react"
-import { useTheme } from "next-themes"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -23,12 +20,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -36,29 +28,33 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuAction,
   SidebarRail,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { ModeToggle } from "@/registry/ada/components/ada/mode-toggle"
 import { AdaLogo, AdaMark } from "@/registry/ada/components/ada/ada-logo"
-import { currentUser, navMain } from "@/registry/ada/lib/ada-data"
+import { currentUser, formatConversationAge, modeRoutes, navMain } from "@/registry/ada/lib/ada-data"
+
+import { deleteConversation, duplicateConversation, exportConversation, useConversations } from "@/registry/ada/hooks/use-conversations"
 
 const activeItem =
   "data-active:bg-primary data-active:text-primary-foreground data-active:shadow-[0_6px_20px_-6px_oklch(0.6_0.28_320/80%)] data-active:hover:bg-primary/90 data-active:hover:text-primary-foreground"
 
 function AccountMenu() {
   const { isMobile } = useSidebar()
-  const { theme, setTheme } = useTheme()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarMenuButton tooltip="My account" className="data-open:bg-sidebar-accent">
+        <SidebarMenuButton tooltip="My account" className="min-w-0 flex-1 data-open:bg-sidebar-accent">
           <Avatar className="size-5 after:hidden">
             <AvatarFallback className="bg-gradient-to-br from-amber-200 to-rose-400 text-[9px] font-semibold text-rose-950">
               {currentUser.initials}
@@ -97,25 +93,6 @@ function AccountMenu() {
               <CreditCardIcon /> Billing
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <SunIcon className="dark:hidden" />
-              <MoonIcon className="hidden dark:block" /> Theme
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-                <DropdownMenuRadioItem value="light">
-                  <SunIcon /> Light
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="dark">
-                  <MoonIcon /> Dark
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="system">
-                  <MonitorIcon /> System
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
@@ -130,7 +107,19 @@ function AccountMenu() {
 
 function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [now, setNow] = React.useState(() => Date.now())
+
+  React.useEffect(() => {
+    const interval = window.setInterval(() => setNow(Date.now()), 60_000)
+    return () => window.clearInterval(interval)
+  }, [])
+  const { items: conversations } = useConversations()
   const { setOpenMobile } = useSidebar()
+  const activeMode = navMain.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
+  const recentConversations = activeMode
+    ? conversations.filter((item) => activeMode.href === "/chat" || modeRoutes[item.mode] === activeMode.href)
+    : []
 
   React.useEffect(() => {
     setOpenMobile(false)
@@ -139,7 +128,7 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="h-14 flex-row items-center justify-between px-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-2">
-        <Link href="/search" className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
+        <Link href="/chat" className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
           <AdaLogo className="group-data-[collapsible=icon]:hidden" />
           <AdaMark className="hidden group-data-[collapsible=icon]:inline-flex" />
           <span className="sr-only">Ada home</span>
@@ -171,6 +160,64 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             ))}
           </SidebarMenu>
         </SidebarGroup>
+        {recentConversations.length > 0 && (
+          <SidebarGroup className="mt-2 border-t border-sidebar-border pt-3 group-data-[collapsible=icon]:hidden">
+            <SidebarGroupLabel asChild>
+              <h2>Latest conversations</h2>
+            </SidebarGroupLabel>
+            <SidebarMenu aria-label="Latest conversations" className="divide-y divide-sidebar-border">
+              {recentConversations.map((item) => {
+                const href = `${modeRoutes[item.mode]}/${item.id}`
+
+                return (
+                  <SidebarMenuItem key={item.id} className="py-1">
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === href}
+                      className="h-9 gap-2 pr-9 text-muted-foreground hover:text-muted-foreground data-active:text-muted-foreground"
+                    >
+                      <Link href={href} aria-current={pathname === href ? "page" : undefined}>
+                        <span className="min-w-0 truncate">{item.title}</span>
+                        <time
+                          dateTime={item.updatedAt}
+                          suppressHydrationWarning
+                          className="shrink-0 text-xs text-muted-foreground tabular-nums"
+                        >
+                          {formatConversationAge(item, now)}
+                        </time>
+                      </Link>
+                    </SidebarMenuButton>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <SidebarMenuAction showOnHover className="top-3" aria-label={`More options for ${item.title}`}>
+                          <MoreHorizontalIcon />
+                        </SidebarMenuAction>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="right" align="start">
+                        <DropdownMenuItem onSelect={() => {
+                          const copy = duplicateConversation(item.id)
+                          if (copy) router.push(`${modeRoutes[copy.mode]}/${copy.id}`)
+                        }}>
+                          Duplicate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => exportConversation(item)}>
+                          Export conversation
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem variant="destructive" onSelect={() => {
+                          if (pathname === href) router.push(modeRoutes[item.mode])
+                          deleteConversation(item.id)
+                        }}>
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </SidebarMenuItem>
+                )
+              })}
+            </SidebarMenu>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu className="gap-1">
@@ -200,8 +247,9 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="flex items-center gap-1">
             <AccountMenu />
+            <ModeToggle className="shrink-0 group-data-[collapsible=icon]:hidden" />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

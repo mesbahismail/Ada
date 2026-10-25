@@ -112,7 +112,7 @@ function useFakeSubmit() {
   function onSubmit(event: React.FormEvent) {
     event.preventDefault()
     setLoading(true)
-    window.setTimeout(() => router.push("/search"), 900)
+    window.setTimeout(() => router.push("/chat"), 900)
   }
   return { loading, onSubmit }
 }
