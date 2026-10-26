@@ -55,6 +55,14 @@ export type UserMessage =
     }
   | { id: string; role: "user"; kind: "audio"; duration: number }
 
+export type VideoScene = {
+  id: string
+  title: string
+  scene: ArtScene
+  duration: number
+  direction: string
+}
+
 export type AssistantMessage =
   | { id: string; role: "assistant"; kind: "text"; content: string }
   | {
@@ -77,6 +85,7 @@ export type AssistantMessage =
       kind: "video"
       scene: ArtScene
       duration: number
+      scenes?: VideoScene[]
     }
 
 export type Message = UserMessage | AssistantMessage

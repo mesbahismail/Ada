@@ -235,7 +235,7 @@ function AssistantMessage({ message, onRegenerate, onCustomize }: ActionsProps) 
           </>
         )}
         {message.kind === "video" && (
-          <VideoPlayer scene={message.scene} duration={message.duration} seed={message.id} />
+          <VideoPlayer scene={message.scene} duration={message.duration} seed={message.id} scenes={message.scenes} />
         )}
         <MessageActions message={message} onRegenerate={onRegenerate} onCustomize={onCustomize} />
       </div>

@@ -191,6 +191,10 @@
         {
           "path": "src/registry/ada/lib/ada-data.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "src/registry/ada/lib/video-editing.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -599,7 +603,8 @@
       "title": "Ada Video",
       "description": "Video generation with prompt gallery and player.",
       "registryDependencies": [
-        "@ada/workspace"
+        "@ada/workspace",
+        "@ada/video-editor"
       ],
       "files": [
         {
@@ -616,6 +621,44 @@
       "categories": [
         "ai",
         "video"
+      ]
+    },
+    {
+      "name": "video-editor",
+      "type": "registry:block",
+      "title": "Ada Video Editor",
+      "description": "Scene timeline, storyboard playback, scene controls and prompt-based edit directions.",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "slider",
+        "sonner",
+        "@ada/app-shell",
+        "@ada/generated-art",
+        "@ada/audio-player",
+        "@ada/prompt-input",
+        "@ada/data"
+      ],
+      "files": [
+        {
+          "path": "src/registry/ada/components/ada/video-editor.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/ada/blocks/video-editor/page.tsx",
+          "type": "registry:page",
+          "target": "app/(ada)/video/edit/page.tsx"
+        }
+      ],
+      "categories": [
+        "ai",
+        "video",
+        "editor"
       ]
     },
     {

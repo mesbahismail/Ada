@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { GeneratedArt } from "@/registry/ada/components/ada/generated-art"
 import { formatTime } from "@/registry/ada/components/ada/audio-player"
-import type { ArtScene, MediaPrompt } from "@/registry/ada/lib/ada-data"
+import type { ArtScene, MediaPrompt, VideoScene } from "@/registry/ada/lib/ada-data"
+import { sceneAtTime } from "@/registry/ada/lib/video-editing"
 
 type MediaPromptCardProps = Omit<React.ComponentProps<"button">, "onSelect"> & {
   item: MediaPrompt
@@ -119,12 +120,14 @@ type VideoPlayerProps = React.ComponentProps<"div"> & {
   scene: ArtScene
   duration: number
   seed?: string
+  scenes?: VideoScene[]
 }
 
 /** Video preview with simulated playback. Replace GeneratedArt with a <video>. */
-function VideoPlayer({ scene, duration, seed, className, ...props }: VideoPlayerProps) {
+function VideoPlayer({ scene, duration, seed, scenes, className, ...props }: VideoPlayerProps) {
   const [playing, setPlaying] = React.useState(false)
   const [elapsed, setElapsed] = React.useState(0)
+  const frame = scenes?.length ? sceneAtTime(scenes, elapsed) : undefined
 
   React.useEffect(() => {
     if (!playing) return
@@ -150,8 +153,8 @@ function VideoPlayer({ scene, duration, seed, className, ...props }: VideoPlayer
       {...props}
     >
       <GeneratedArt
-        scene={scene}
-        seed={seed}
+        scene={frame?.scene.scene ?? scene}
+        seed={frame ? `${frame.scene.id}-${frame.scene.direction}` : seed}
         className="absolute inset-0 transition-transform duration-[12s] ease-linear"
         style={{ transform: `scale(${1 + (elapsed / duration) * 0.15})` }}
       />

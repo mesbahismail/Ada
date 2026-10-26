@@ -20,6 +20,7 @@ Nova preset) · lucide-react · next-themes · sonner.
 | `/image`, `/image/[id]` | `image` | Prompt gallery, 2×2 results, "Surprise me" |
 | `/image/edit` | `image-editor` | Upscale / adjust / edit panels, aspect ratio, sampling, sliders |
 | `/video`, `/video/[id]` | `video` | Prompt gallery, video player |
+| `/video/edit` | `video-editor` | Scene timeline, playback, split/reorder, saved scene directions and AI edit input |
 | `/music` | `music` | Coming-soon empty state |
 | `/pricing` | `pricing` | Three plans with monthly/yearly toggle |
 | `/settings` | `settings` | Organization, members, billing, API keys, logs |

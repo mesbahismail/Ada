@@ -138,7 +138,14 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
                 messages={messages}
                 pending={pending}
                 onRegenerate={regenerate}
-                onCustomize={() => router.push("/image/edit")}
+                onCustomize={(id) => {
+                  const message = messages.find((item) => item.id === id)
+                  if (message?.kind === "video" && savedConversation) {
+                    router.push(`/video/edit?conversation=${encodeURIComponent(savedConversation.id)}&message=${encodeURIComponent(id)}`)
+                  } else {
+                    router.push("/image/edit")
+                  }
+                }}
               />
               {hasAnswer && !pending && followUps.length > 0 && (
                 <SuggestionChips className="mt-10" items={followUps} onSelect={send} />

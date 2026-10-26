@@ -60,6 +60,7 @@ function environment(saved = new Map()) {
   const history = load('src/registry/ada/hooks/use-conversations.ts')
   return { history, saved, errors, downloads, blobs, storageListeners,
     formatAge: load('src/registry/ada/lib/ada-data.ts').formatConversationAge,
+    videoEditing: load('src/registry/ada/lib/video-editing.ts'),
     snapshot: () => history.useConversations(),
     render(options) { cursor = 0; return load('src/registry/ada/hooks/use-ada-chat.ts').useAdaChat(options) },
     remount() { states = []; cursor = 0 },
@@ -235,4 +236,50 @@ test('New chat immediately saves and opens a blank conversation, then titles it 
   assert.equal(chat.messages.length, 0)
   assert.equal(env.snapshot().items.find((item) => item.id === id).messages.length, 2)
   assert.equal(env.snapshot().items.find((item) => item.id === original.id).messages.length, original.messages.length)
+})
+
+test('video scene timelines preserve duration, support seeking and bounded splits', () => {
+  const env = environment()
+  const { createVideoTimeline, timelineDuration, sceneAtTime, splitVideoScene } = env.videoEditing
+  const scenes = createVideoTimeline({ id: 'video', scene: 'forest', duration: 12, role: 'assistant', kind: 'video' }, 'A panda in a forest')
+  assert.equal(scenes.length, 3)
+  assert.equal(timelineDuration(scenes), 12)
+  assert.equal(sceneAtTime(scenes, 0).scene.id, scenes[0].id)
+  assert.equal(sceneAtTime(scenes, 4).scene.id, scenes[1].id)
+  assert.equal(sceneAtTime(scenes, 12).scene.id, scenes[2].id)
+  assert.equal(sceneAtTime(scenes, 100).scene.id, scenes[2].id)
+  const split = splitVideoScene(scenes, scenes[0].id, 1.5, 'split')
+  assert.equal(split.length, 4)
+  assert.equal(timelineDuration(split), 12)
+  assert.equal(split[0].duration, 1.5)
+  assert.equal(split[1].duration, 2.5)
+  assert.equal(split[1].id, 'split')
+  const clamped = splitVideoScene(scenes, scenes[0].id, 99, 'bounded')
+  assert.equal(clamped[0].duration, 3)
+  assert.equal(clamped[1].duration, 1)
+  const short = createVideoTimeline({ id: 'short', scene: 'forest', duration: 1.5, kind: 'video', role: 'assistant' })
+  assert.equal(timelineDuration(short), 1.5)
+  assert.equal(splitVideoScene(short, short[0].id, 0.5, 'no-split').length, 1)
+})
+
+test('video edit directions update previews and survive saving and reopening', () => {
+  const env = environment()
+  const { createVideoTimeline, applySceneDirection, timelineDuration } = env.videoEditing
+  const original = env.snapshot().items.find((item) => item.id === 'panda-video')
+  const video = original.messages.find((message) => message.kind === 'video')
+  const scenes = createVideoTimeline(video)
+  const next = scenes.map((scene, index) => index === 1 ? applySceneDirection(scene, 'Use golden hour and make it 6 seconds') : scene)
+  assert.equal(next[1].scene, 'sunset')
+  assert.equal(next[1].duration, 6)
+  assert.equal(next[0].scene, 'forest')
+  assert.equal(applySceneDirection(next[1], 'Make it 999 seconds').duration, 60)
+  assert.equal(applySceneDirection(next[1], 'Make it 0 seconds').duration, 1)
+  env.history.updateMessages(original.id, (messages) => messages.map((message) => message.id === video.id ? {
+    ...message, scenes: next, duration: timelineDuration(next), scene: next[0].scene,
+  } : message))
+  const saved = environment(env.saved).snapshot().items.find((item) => item.id === original.id).messages.find((message) => message.id === video.id)
+  assert.equal(saved.scenes.length, 3)
+  assert.equal(saved.scenes[1].direction, 'Use golden hour and make it 6 seconds')
+  assert.equal(saved.duration, 14)
+  assert.equal(createVideoTimeline(saved)[1].scene, 'sunset')
 })
