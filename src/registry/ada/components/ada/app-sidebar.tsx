@@ -36,11 +36,12 @@ import {
   SidebarMenuItem,
   SidebarMenuAction,
   SidebarRail,
+  SidebarSeparator,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/registry/ada/components/ada/mode-toggle"
-import { AdaLogo, AdaMark } from "@/registry/ada/components/ada/ada-logo"
+import { AdaBird, AdaLogo } from "@/registry/ada/components/ada/ada-logo"
 import { currentUser, formatConversationAge, modeRoutes, navMain } from "@/registry/ada/lib/ada-data"
 
 import { deleteConversation, duplicateConversation, exportConversation, useConversations } from "@/registry/ada/hooks/use-conversations"
@@ -115,7 +116,7 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     return () => window.clearInterval(interval)
   }, [])
   const { items: conversations } = useConversations()
-  const { setOpenMobile } = useSidebar()
+  const { setOpenMobile, toggleSidebar, state } = useSidebar()
   const activeMode = navMain.find((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
   const recentConversations = activeMode
     ? conversations.filter((item) => activeMode.href === "/chat" || modeRoutes[item.mode] === activeMode.href)
@@ -128,15 +129,23 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="h-14 flex-row items-center justify-between px-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-2">
-        <Link href="/chat" className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
-          <AdaLogo className="group-data-[collapsible=icon]:hidden" />
-          <AdaMark className="hidden group-data-[collapsible=icon]:inline-flex" />
+        <Link href="/chat" className="group/ada-orb rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring group-data-[collapsible=icon]:hidden">
+          <AdaLogo standalone />
           <span className="sr-only">Ada home</span>
         </Link>
+        <button
+          type="button"
+          aria-label="Open sidebar"
+          aria-expanded={state === "expanded"}
+          onClick={toggleSidebar}
+          className="group/ada-orb hidden size-9 shrink-0 items-center justify-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring group-data-[collapsible=icon]:inline-flex"
+        >
+          <AdaBird branded className="size-8 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/ada-orb:scale-110" />
+        </button>
         <SidebarTrigger className="text-muted-foreground group-data-[collapsible=icon]:hidden" />
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
+      <SidebarContent className="overflow-hidden">
+        <SidebarGroup className="shrink-0">
           <SidebarMenu className="gap-1">
             {navMain.map((item) => (
               <SidebarMenuItem key={item.href}>
@@ -161,65 +170,68 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
         {recentConversations.length > 0 && (
-          <SidebarGroup className="mt-2 border-t border-sidebar-border pt-3 group-data-[collapsible=icon]:hidden">
-            <SidebarGroupLabel asChild>
-              <h2>Latest conversations</h2>
+          <SidebarGroup className="mt-2 min-h-0 flex-1 border-t border-sidebar-border pt-3 pb-0 group-data-[collapsible=icon]:hidden">
+            <SidebarGroupLabel asChild className="tracking-wide">
+              <h2>LATEST</h2>
             </SidebarGroupLabel>
-            <SidebarMenu aria-label="Latest conversations" className="divide-y divide-sidebar-border">
-              {recentConversations.map((item) => {
-                const href = `${modeRoutes[item.mode]}/${item.id}`
+            <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto [mask-image:linear-gradient(to_bottom,black_calc(100%_-_32px),transparent)]">
+              <SidebarMenu aria-label="Latest conversations" className="divide-y divide-sidebar-border pb-8">
+                {recentConversations.map((item) => {
+                  const href = `${modeRoutes[item.mode]}/${item.id}`
 
-                return (
-                  <SidebarMenuItem key={item.id} className="py-1">
-                    <SidebarMenuButton
-                      asChild
-                      isActive={pathname === href}
-                      className="h-9 gap-2 pr-9 text-muted-foreground hover:text-muted-foreground data-active:text-muted-foreground"
-                    >
-                      <Link href={href} aria-current={pathname === href ? "page" : undefined}>
-                        <span className="min-w-0 truncate">{item.title}</span>
-                        <time
-                          dateTime={item.updatedAt}
-                          suppressHydrationWarning
-                          className="shrink-0 text-xs text-muted-foreground tabular-nums"
-                        >
-                          {formatConversationAge(item, now)}
-                        </time>
-                      </Link>
-                    </SidebarMenuButton>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <SidebarMenuAction showOnHover className="top-3" aria-label={`More options for ${item.title}`}>
-                          <MoreHorizontalIcon />
-                        </SidebarMenuAction>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent side="right" align="start">
-                        <DropdownMenuItem onSelect={() => {
-                          const copy = duplicateConversation(item.id)
-                          if (copy) router.push(`${modeRoutes[copy.mode]}/${copy.id}`)
-                        }}>
-                          Duplicate
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => exportConversation(item)}>
-                          Export conversation
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem variant="destructive" onSelect={() => {
-                          if (pathname === href) router.push(modeRoutes[item.mode])
-                          deleteConversation(item.id)
-                        }}>
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </SidebarMenuItem>
-                )
-              })}
-            </SidebarMenu>
+                  return (
+                    <SidebarMenuItem key={item.id} className="py-1">
+                      <SidebarMenuButton
+                        asChild
+                        isActive={pathname === href}
+                        className="h-9 gap-2 pr-9 text-muted-foreground hover:text-muted-foreground data-active:text-muted-foreground"
+                      >
+                        <Link href={href} aria-current={pathname === href ? "page" : undefined}>
+                          <span className="min-w-0 truncate">{item.title}</span>
+                          <time
+                            dateTime={item.updatedAt}
+                            suppressHydrationWarning
+                            className="shrink-0 text-xs text-muted-foreground tabular-nums"
+                          >
+                            {formatConversationAge(item, now)}
+                          </time>
+                        </Link>
+                      </SidebarMenuButton>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <SidebarMenuAction showOnHover className="top-3" aria-label={`More options for ${item.title}`}>
+                            <MoreHorizontalIcon />
+                          </SidebarMenuAction>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent side="right" align="start">
+                          <DropdownMenuItem onSelect={() => {
+                            const copy = duplicateConversation(item.id)
+                            if (copy) router.push(`${modeRoutes[copy.mode]}/${copy.id}`)
+                          }}>
+                            Duplicate
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onSelect={() => exportConversation(item)}>
+                            Export conversation
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem variant="destructive" onSelect={() => {
+                            if (pathname === href) router.push(modeRoutes[item.mode])
+                            deleteConversation(item.id)
+                          }}>
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </SidebarMenuItem>
+                  )
+                })}
+              </SidebarMenu>
+            </div>
           </SidebarGroup>
         )}
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarSeparator className="mx-3" />
+      <SidebarFooter className="shrink-0 pt-3">
         <SidebarMenu className="gap-1">
           <SidebarMenuItem>
             <SidebarMenuButton

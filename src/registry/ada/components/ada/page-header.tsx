@@ -7,7 +7,8 @@ import { toast } from "sonner"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar"
+import { AdaBird } from "@/registry/ada/components/ada/ada-logo"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -90,7 +91,7 @@ function PageHeader({
   className,
   ...props
 }: PageHeaderProps) {
-  const { isMobile, state } = useSidebar()
+  const { isMobile, openMobile, toggleSidebar } = useSidebar()
 
   return (
     <header
@@ -101,8 +102,16 @@ function PageHeader({
       )}
       {...props}
     >
-      {(isMobile || state === "collapsed") && (
-        <SidebarTrigger className="-ml-1 text-muted-foreground" />
+      {isMobile && (
+        <button
+          type="button"
+          aria-label="Open sidebar"
+          aria-expanded={openMobile}
+          onClick={toggleSidebar}
+          className="group/ada-orb -ml-1 flex size-9 shrink-0 items-center justify-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+        >
+          <AdaBird branded className="size-8" />
+        </button>
       )}
       <h1 className="min-w-0 truncate font-heading text-2xl leading-none tracking-tight">
         {title}

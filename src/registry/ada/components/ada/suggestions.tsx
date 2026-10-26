@@ -49,15 +49,13 @@ function PromptSuggestions({ items, onSelect, className, ...props }: PromptSugge
           key={item.title}
           type="button"
           onClick={() => onSelect?.(item.title)}
-          className="group/suggestion flex items-start gap-3 rounded-xl border bg-surface p-3 text-left backdrop-blur-md transition-all outline-none hover:border-primary/50 hover:bg-primary/10 focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="group/suggestion flex items-center gap-3 rounded-xl border bg-surface p-3 text-left backdrop-blur-md transition-all outline-none hover:border-primary/50 hover:bg-primary/10 focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-            <ArrowUpRightIcon className="size-3.5 transition-transform group-hover/suggestion:rotate-45" />
-          </span>
-          <span className="min-w-0 space-y-0.5">
+          <span className="min-w-0 flex-1 space-y-0.5">
             <span className="block truncate text-sm font-medium">{item.title}</span>
             <span className="block truncate text-xs text-muted-foreground">{item.description}</span>
           </span>
+          <ArrowUpRightIcon aria-hidden="true" className="size-4 shrink-0 text-primary transition-transform group-hover/suggestion:rotate-45" />
         </button>
       ))}
     </div>
@@ -91,8 +89,8 @@ function SuggestionChips({
             className="rounded-full bg-surface backdrop-blur hover:border-primary/50 hover:bg-primary/10 dark:bg-surface"
             onClick={() => onSelect?.(item)}
           >
-            <CornerDownRightIcon className="text-primary" />
             {item}
+            <CornerDownRightIcon aria-hidden="true" className="text-primary" />
           </Button>
         ))}
       </div>

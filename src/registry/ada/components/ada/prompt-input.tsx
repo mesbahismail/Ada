@@ -82,96 +82,105 @@ function PromptInput({
       {...props}
     >
       <div className="flex items-end gap-2">
-        <InputGroup className="min-h-12 items-end rounded-3xl border-border bg-surface px-1 shadow-[0_8px_30px_-12px_oklch(0.2_0.1_315/45%)] backdrop-blur-xl dark:bg-surface">
-          {recording ? (
-            <div className="flex h-12 w-full items-center gap-3 px-2">
-              <InputGroupButton
-                size="icon-sm"
-                variant="ghost"
-                className="rounded-full"
-                aria-label="Cancel recording"
-                onClick={() => stopRecording(false)}
-              >
-                <XIcon />
-              </InputGroupButton>
-              <span className="size-2 shrink-0 animate-pulse rounded-full bg-destructive" />
-              <Waveform animated seed={`rec-${seconds > 3}`} bars={72} progress={1} className="h-6 text-primary" />
-              <span className="font-mono text-xs text-muted-foreground tabular-nums">
-                {formatTime(seconds)}
-              </span>
-              <InputGroupButton
-                size="icon-sm"
-                variant="default"
-                className="rounded-full"
-                aria-label="Send voice note"
-                onClick={() => stopRecording(true)}
-              >
-                <CheckIcon />
-              </InputGroupButton>
-            </div>
-          ) : (
-            <>
-              <InputGroupAddon align="inline-start" className="self-end pb-2">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <InputGroupButton
-                      size="icon-sm"
-                      className="rounded-full text-muted-foreground"
-                      aria-label="Attach"
-                      onClick={onAttach}
-                    >
-                      <PaperclipIcon />
-                    </InputGroupButton>
-                  </TooltipTrigger>
-                  <TooltipContent>Attach files</TooltipContent>
-                </Tooltip>
-              </InputGroupAddon>
-              <InputGroupTextarea
-                rows={1}
-                value={value}
-                disabled={disabled}
-                placeholder={placeholder}
-                aria-label={placeholder}
-                className="max-h-48 min-h-11 py-3 text-sm"
-                onChange={(event) => setValue(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
-                    event.preventDefault()
-                    submit()
-                  }
-                }}
-              />
-              <InputGroupAddon align="inline-end" className="self-end gap-1 pb-2">
-                {onVoiceSubmit && (
+        <div className="min-w-0 flex-1 rounded-3xl bg-white/15 p-px shadow-[0_8px_30px_-12px_oklch(0.2_0.1_315/45%)] focus-within:bg-primary">
+          <InputGroup
+            className="min-h-12 items-end rounded-[23px] border-0 bg-[#26142E] px-1 text-white has-disabled:bg-[#26142E] has-disabled:opacity-100 has-[[data-slot=input-group-control]:focus-visible]:ring-0 dark:bg-[#26142E] dark:has-disabled:bg-[#26142E]"
+            onClick={(event) => {
+              if (!(event.target as HTMLElement).closest("button, textarea")) {
+                event.currentTarget.querySelector("textarea")?.focus()
+              }
+            }}
+          >
+            {recording ? (
+              <div className="flex h-12 w-full items-center gap-3 px-2">
+                <InputGroupButton
+                  size="icon-sm"
+                  variant="ghost"
+                  className="rounded-full text-white hover:text-white"
+                  aria-label="Cancel recording"
+                  onClick={() => stopRecording(false)}
+                >
+                  <XIcon />
+                </InputGroupButton>
+                <span className="size-2 shrink-0 animate-pulse rounded-full bg-destructive" />
+                <Waveform animated seed={`rec-${seconds > 3}`} bars={72} progress={1} className="h-6 text-white" />
+                <span className="font-mono text-xs text-white tabular-nums">
+                  {formatTime(seconds)}
+                </span>
+                <InputGroupButton
+                  size="icon-sm"
+                  variant="default"
+                  className="rounded-full text-white hover:text-white"
+                  aria-label="Send voice note"
+                  onClick={() => stopRecording(true)}
+                >
+                  <CheckIcon />
+                </InputGroupButton>
+              </div>
+            ) : (
+              <>
+                <InputGroupAddon align="inline-start" className="self-end pb-2 text-white">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <InputGroupButton
                         size="icon-sm"
-                        className="rounded-full text-muted-foreground"
-                        aria-label="Record voice"
-                        disabled={disabled}
-                        onClick={() => setRecording(true)}
+                        className="rounded-full text-white hover:bg-white/10 hover:text-white"
+                        aria-label="Attach"
+                        onClick={onAttach}
                       >
-                        <MicIcon />
+                        <PaperclipIcon />
                       </InputGroupButton>
                     </TooltipTrigger>
-                    <TooltipContent>Voice input</TooltipContent>
+                    <TooltipContent>Attach files</TooltipContent>
                   </Tooltip>
-                )}
-                <InputGroupButton
-                  type="submit"
-                  size="icon-sm"
-                  variant="default"
-                  className="rounded-full shadow-[0_0_14px_oklch(0.6_0.28_320/50%)]"
-                  aria-label="Send"
-                  disabled={disabled || !value.trim()}
-                >
-                  <ArrowUpIcon />
-                </InputGroupButton>
-              </InputGroupAddon>
-            </>
-          )}
-        </InputGroup>
+                </InputGroupAddon>
+                <InputGroupTextarea
+                  rows={1}
+                  value={value}
+                  disabled={disabled}
+                  placeholder={placeholder}
+                  aria-label={placeholder}
+                  className="max-h-48 min-h-11 py-3 text-sm text-white caret-white placeholder:text-white"
+                  onChange={(event) => setValue(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                      event.preventDefault()
+                      submit()
+                    }
+                  }}
+                />
+                <InputGroupAddon align="inline-end" className="self-end gap-1 pb-2 text-white">
+                  {onVoiceSubmit && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <InputGroupButton
+                          size="icon-sm"
+                          className="rounded-full text-white hover:bg-white/10 hover:text-white"
+                          aria-label="Record voice"
+                          disabled={disabled}
+                          onClick={() => setRecording(true)}
+                        >
+                          <MicIcon />
+                        </InputGroupButton>
+                      </TooltipTrigger>
+                      <TooltipContent>Voice input</TooltipContent>
+                    </Tooltip>
+                  )}
+                  <InputGroupButton
+                    type="submit"
+                    size="icon-sm"
+                    variant="default"
+                    className="rounded-full text-white shadow-[0_0_14px_oklch(0.6_0.28_320/50%)] disabled:opacity-100"
+                    aria-label="Send"
+                    disabled={disabled || !value.trim()}
+                  >
+                    <ArrowUpIcon />
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </>
+            )}
+          </InputGroup>
+        </div>
         {actions}
       </div>
       {toolbar}

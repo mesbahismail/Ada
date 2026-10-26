@@ -99,13 +99,11 @@
   --surface-foreground: oklch(0.22 0.06 315);
   --bubble: oklch(0.58 0.27 320);
   --bubble-foreground: oklch(0.99 0.005 320);
-  --backdrop:
-    radial-gradient(90% 70% at 90% 105%, oklch(0.8 0.15 318 / 70%) 0%, transparent 65%),
-    radial-gradient(60% 50% at 0% 0%, oklch(0.93 0.05 300 / 90%) 0%, transparent 70%),
-    linear-gradient(160deg, oklch(0.97 0.012 315) 0%, oklch(0.92 0.04 318) 100%);
-  --bubble-gradient: linear-gradient(135deg, oklch(0.62 0.27 322) 0%, oklch(0.54 0.26 308) 100%);
-  --orb-gradient: radial-gradient(circle at 35% 30%, oklch(0.78 0.2 320) 0%, oklch(0.6 0.28 318) 45%, oklch(0.42 0.22 300) 100%);
-  --glow: 0 0 40px 4px oklch(0.6 0.28 320 / 40%), 0 0 90px 20px oklch(0.6 0.28 320 / 18%);
+  --backdrop: radial-gradient(90% 70% at 90% 105%, rgb(238 40 242 / 20%) 0%, transparent 65%), radial-gradient(60% 50% at 0% 0%, rgb(154 41 224 / 10%) 0%, transparent 70%), linear-gradient(160deg, color-mix(in srgb, #EE28F2 3%, var(--background)) 0%, color-mix(in srgb, #9A29E0 8%, var(--background)) 100%);
+  --primary-gradient: linear-gradient(135deg, #EE28F2 0%, #9A29E0 100%);
+  --bubble-gradient: var(--primary-gradient);
+  --orb-gradient: var(--primary-gradient);
+  --glow: 0 0 40px 4px rgb(238 40 242 / 40%), 0 0 90px 20px rgb(154 41 224 / 18%);
 }
 
 .dark {
@@ -144,19 +142,22 @@
   --surface-foreground: oklch(0.96 0.012 320);
   --bubble: oklch(0.62 0.28 320);
   --bubble-foreground: oklch(0.99 0.005 320);
-  --backdrop:
-    radial-gradient(90% 70% at 90% 105%, oklch(0.42 0.22 318 / 75%) 0%, transparent 65%),
-    radial-gradient(60% 50% at 0% 0%, oklch(0.26 0.1 300 / 45%) 0%, transparent 70%),
-    linear-gradient(160deg, oklch(0.14 0.03 315) 0%, oklch(0.17 0.06 318) 100%);
-  --bubble-gradient: linear-gradient(135deg, oklch(0.62 0.28 322) 0%, oklch(0.52 0.26 308) 100%);
-  --orb-gradient: radial-gradient(circle at 35% 30%, oklch(0.78 0.2 320) 0%, oklch(0.6 0.28 318) 45%, oklch(0.38 0.2 300) 100%);
-  --glow: 0 0 40px 6px oklch(0.6 0.28 320 / 55%), 0 0 110px 30px oklch(0.6 0.28 320 / 25%);
+  --backdrop: radial-gradient(90% 70% at 90% 105%, rgb(238 40 242 / 22%) 0%, transparent 65%), radial-gradient(60% 50% at 0% 0%, rgb(154 41 224 / 14%) 0%, transparent 70%), linear-gradient(160deg, color-mix(in srgb, #EE28F2 3%, var(--background)) 0%, color-mix(in srgb, #9A29E0 8%, var(--background)) 100%);
+  --primary-gradient: linear-gradient(135deg, #EE28F2 0%, #9A29E0 100%);
+  --bubble-gradient: var(--primary-gradient);
+  --orb-gradient: var(--primary-gradient);
+  --glow: 0 0 40px 6px rgb(238 40 242 / 55%), 0 0 110px 30px rgb(154 41 224 / 25%);
 }
 
 @utility bg-backdrop {
   background-color: var(--background);
   background-image: var(--backdrop);
   background-attachment: fixed;
+}
+
+@utility bg-primary {
+  background-color: var(--primary);
+  background-image: var(--primary-gradient);
 }
 
 @utility bg-bubble-gradient {
@@ -180,5 +181,23 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+@keyframes ada-wing-front {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes ada-wing-back {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(12deg);
   }
 }
