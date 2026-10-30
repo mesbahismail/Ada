@@ -92,18 +92,18 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
   }
 
   return (
-    <div className="flex h-svh min-h-0 flex-col">
+    <div className="flex h-dvh min-h-0 min-w-0 flex-col">
       <PageHeader
         title={savedConversation?.title ?? newTitles[mode]}
         newHref={modeRoutes[mode]}
         onNew={newConversation}
         newLabel={mode === "chat" ? "New chat" : newTitles[mode]}
       />
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-4 py-6">
+      <div ref={scrollRef} className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+        <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-3 py-3 sm:px-4 sm:py-6">
           {empty ? (
             <>
-              <div className="flex flex-1 items-center justify-center py-10">
+              <div className="flex flex-1 items-center justify-center py-5 sm:py-10">
                 <WelcomeHero />
               </div>
               {(mode === "search" || mode === "chat") && (
@@ -154,7 +154,7 @@ function AiWorkspace({ mode, conversation }: AiWorkspaceProps) {
           )}
         </div>
       </div>
-      <div className="shrink-0 px-4 pt-2 pb-3">
+      <div className="shrink-0 px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-4 sm:pb-3">
         <PromptInput
           key={draftKey}
           placeholder={placeholders[mode]}

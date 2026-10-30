@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -133,15 +134,22 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           <AdaLogo standalone />
           <span className="sr-only">Ada home</span>
         </Link>
-        <button
-          type="button"
-          aria-label="Open sidebar"
-          aria-expanded={state === "expanded"}
-          onClick={toggleSidebar}
-          className="group/ada-orb hidden size-9 shrink-0 items-center justify-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring group-data-[collapsible=icon]:inline-flex"
-        >
-          <AdaBird branded className="size-8 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/ada-orb:scale-110" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label="Expand sidebar"
+              aria-expanded={state === "expanded"}
+              onClick={toggleSidebar}
+              className="group/ada-orb hidden size-9 shrink-0 items-center justify-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring group-data-[collapsible=icon]:inline-flex"
+            >
+              <AdaBird branded className="size-8 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/ada-orb:scale-110" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={8} hidden={state !== "collapsed"}>
+            Expand sidebar
+          </TooltipContent>
+        </Tooltip>
         <SidebarTrigger className="text-muted-foreground group-data-[collapsible=icon]:hidden" />
       </SidebarHeader>
       <SidebarContent className="overflow-hidden">
@@ -170,28 +178,28 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
         {recentConversations.length > 0 && (
-          <SidebarGroup className="mt-2 min-h-0 flex-1 border-t border-sidebar-border pt-3 pb-0 group-data-[collapsible=icon]:hidden">
+          <SidebarGroup className="mt-2 min-h-0 flex-1 pt-3 pb-0 group-data-[collapsible=icon]:hidden">
             <SidebarGroupLabel asChild className="tracking-wide">
               <h2>LATEST</h2>
             </SidebarGroupLabel>
             <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto [mask-image:linear-gradient(to_bottom,black_calc(100%_-_32px),transparent)]">
-              <SidebarMenu aria-label="Latest conversations" className="divide-y divide-sidebar-border pb-8">
+              <SidebarMenu aria-label="Latest conversations" className="pb-8">
                 {recentConversations.map((item) => {
                   const href = `${modeRoutes[item.mode]}/${item.id}`
 
                   return (
-                    <SidebarMenuItem key={item.id} className="py-1">
+                    <SidebarMenuItem key={item.id}>
                       <SidebarMenuButton
                         asChild
                         isActive={pathname === href}
-                        className="h-9 gap-2 pr-9 text-muted-foreground hover:text-muted-foreground data-active:text-muted-foreground"
+                        className="h-8 gap-2 pr-9 text-muted-foreground hover:text-muted-foreground data-active:text-muted-foreground"
                       >
                         <Link href={href} aria-current={pathname === href ? "page" : undefined}>
                           <span className="min-w-0 truncate">{item.title}</span>
                           <time
                             dateTime={item.updatedAt}
                             suppressHydrationWarning
-                            className="shrink-0 text-xs text-muted-foreground tabular-nums"
+                            className="shrink-0 text-xs text-muted-foreground/50 tabular-nums"
                           >
                             {formatConversationAge(item, now)}
                           </time>
@@ -199,7 +207,7 @@ function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                       </SidebarMenuButton>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <SidebarMenuAction showOnHover className="top-3" aria-label={`More options for ${item.title}`}>
+                          <SidebarMenuAction showOnHover aria-label={`More options for ${item.title}`}>
                             <MoreHorizontalIcon />
                           </SidebarMenuAction>
                         </DropdownMenuTrigger>

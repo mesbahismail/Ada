@@ -97,7 +97,7 @@ function PageHeader({
     <header
       data-slot="page-header"
       className={cn(
-        "sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b border-border/60 px-4 backdrop-blur-xl",
+        "sticky top-0 z-20 flex h-12 shrink-0 items-center gap-1.5 border-b border-border/60 px-3 backdrop-blur-xl sm:h-14 sm:gap-2 sm:px-4",
         className
       )}
       {...props}
@@ -110,22 +110,22 @@ function PageHeader({
           onClick={toggleSidebar}
           className="group/ada-orb -ml-1 flex size-9 shrink-0 items-center justify-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
         >
-          <AdaBird branded className="size-8" />
+          <AdaBird branded className="size-6 sm:size-8" />
         </button>
       )}
-      <h1 className="min-w-0 truncate font-heading text-2xl leading-none tracking-tight">
+      <h1 className="min-w-0 truncate font-heading text-lg leading-none tracking-tight sm:text-2xl">
         {title}
       </h1>
       <div className="ml-auto flex shrink-0 items-center gap-1.5">
         {actions}
         {newHref && (
           onNew ? (
-            <Button size="sm" className="rounded-full" onClick={onNew}>
-              <PlusIcon /> {newLabel}
+            <Button size="sm" className="rounded-full" onClick={onNew} aria-label={newLabel}>
+              <PlusIcon /> <span className="sm:hidden">New</span><span className="hidden sm:inline">{newLabel}</span>
             </Button>
           ) : (
             <Button asChild size="sm" className="rounded-full">
-              <Link href={newHref}><PlusIcon /> {newLabel}</Link>
+              <Link href={newHref} aria-label={newLabel}><PlusIcon /> <span className="sm:hidden">New</span><span className="hidden sm:inline">{newLabel}</span></Link>
             </Button>
           )
         )}

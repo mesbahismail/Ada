@@ -20,12 +20,12 @@ function WelcomeHero({
   return (
     <div
       data-slot="welcome-hero"
-      className={cn("flex flex-col items-center gap-8 text-center animate-in fade-in-0 zoom-in-95 duration-500", className)}
+      className={cn("flex flex-col items-center gap-4 text-center animate-in fade-in-0 zoom-in-95 duration-500 sm:gap-8", className)}
       {...props}
     >
-      <AdaOrb />
+      <AdaOrb className="size-12 sm:size-20" />
       <div className="space-y-2">
-        <h2 className="font-heading text-3xl tracking-tight text-balance sm:text-4xl">{title}</h2>
+        <h2 className="font-heading text-2xl tracking-tight text-balance sm:text-4xl">{title}</h2>
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </div>
     </div>

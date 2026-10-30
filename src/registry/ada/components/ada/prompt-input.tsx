@@ -82,9 +82,9 @@ function PromptInput({
       {...props}
     >
       <div className="flex items-end gap-2">
-        <div className="min-w-0 flex-1 rounded-3xl bg-white/15 p-px shadow-[0_8px_30px_-12px_oklch(0.2_0.1_315/45%)] focus-within:bg-primary">
+        <div className="min-w-0 flex-1 rounded-3xl bg-border p-px shadow-[0_8px_30px_-12px_oklch(0.2_0.1_315/15%)] focus-within:bg-primary dark:bg-white/15 dark:shadow-[0_8px_30px_-12px_oklch(0.2_0.1_315/45%)] dark:focus-within:bg-primary">
           <InputGroup
-            className="min-h-12 items-end rounded-[23px] border-0 bg-[#26142E] px-1 text-white has-disabled:bg-[#26142E] has-disabled:opacity-100 has-[[data-slot=input-group-control]:focus-visible]:ring-0 dark:bg-[#26142E] dark:has-disabled:bg-[#26142E]"
+            className="min-h-12 items-end rounded-[23px] border-0 bg-background px-1 text-foreground has-disabled:bg-background has-disabled:opacity-100 has-[[data-slot=input-group-control]:focus-visible]:ring-0 dark:bg-[#26142E] dark:text-white dark:has-disabled:bg-[#26142E]"
             onClick={(event) => {
               if (!(event.target as HTMLElement).closest("button, textarea")) {
                 event.currentTarget.querySelector("textarea")?.focus()
@@ -96,15 +96,15 @@ function PromptInput({
                 <InputGroupButton
                   size="icon-sm"
                   variant="ghost"
-                  className="rounded-full text-white hover:text-white"
+                  className="rounded-full text-foreground hover:text-foreground dark:text-white dark:hover:text-white"
                   aria-label="Cancel recording"
                   onClick={() => stopRecording(false)}
                 >
                   <XIcon />
                 </InputGroupButton>
                 <span className="size-2 shrink-0 animate-pulse rounded-full bg-destructive" />
-                <Waveform animated seed={`rec-${seconds > 3}`} bars={72} progress={1} className="h-6 text-white" />
-                <span className="font-mono text-xs text-white tabular-nums">
+                <Waveform animated seed={`rec-${seconds > 3}`} bars={72} progress={1} className="h-6 text-foreground dark:text-white" />
+                <span className="font-mono text-xs text-foreground tabular-nums dark:text-white">
                   {formatTime(seconds)}
                 </span>
                 <InputGroupButton
@@ -119,12 +119,12 @@ function PromptInput({
               </div>
             ) : (
               <>
-                <InputGroupAddon align="inline-start" className="self-end pb-2 text-white">
+                <InputGroupAddon align="inline-start" className="self-end pb-2 text-foreground dark:text-white">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <InputGroupButton
                         size="icon-sm"
-                        className="rounded-full text-white hover:bg-white/10 hover:text-white"
+                        className="rounded-full text-foreground hover:bg-muted hover:text-foreground dark:text-white dark:hover:bg-white/10 dark:hover:text-white"
                         aria-label="Attach"
                         onClick={onAttach}
                       >
@@ -140,7 +140,7 @@ function PromptInput({
                   disabled={disabled}
                   placeholder={placeholder}
                   aria-label={placeholder}
-                  className="max-h-48 min-h-11 py-3 text-sm text-white caret-white placeholder:text-white"
+                  className="max-h-32 min-h-11 min-w-0 w-0 py-3 text-base text-foreground caret-foreground placeholder:text-muted-foreground sm:max-h-48 sm:text-sm dark:text-white dark:caret-white dark:placeholder:text-white/60"
                   onChange={(event) => setValue(event.target.value)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
@@ -149,13 +149,13 @@ function PromptInput({
                     }
                   }}
                 />
-                <InputGroupAddon align="inline-end" className="self-end gap-1 pb-2 text-white">
+                <InputGroupAddon align="inline-end" className="self-end gap-1 pb-2 text-foreground dark:text-white">
                   {onVoiceSubmit && (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <InputGroupButton
                           size="icon-sm"
-                          className="rounded-full text-white hover:bg-white/10 hover:text-white"
+                          className="rounded-full text-foreground hover:bg-muted hover:text-foreground dark:text-white dark:hover:bg-white/10 dark:hover:text-white"
                           aria-label="Record voice"
                           disabled={disabled}
                           onClick={() => setRecording(true)}
@@ -185,8 +185,8 @@ function PromptInput({
       </div>
       {toolbar}
       {disclaimer !== false && (
-        <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-muted-foreground">
-          <InfoIcon className="size-3" />
+        <p className="flex items-center justify-center gap-1 text-center text-[10px] leading-tight text-muted-foreground sm:gap-1.5 sm:text-[11px]">
+          <InfoIcon className="size-3 shrink-0" />
           {disclaimer ?? "Ada is a beta release and may give inaccurate or harmful information."}
         </p>
       )}

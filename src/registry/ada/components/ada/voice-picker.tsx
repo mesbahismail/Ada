@@ -48,6 +48,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   voiceCategories,
   voices as allVoices,
@@ -91,7 +92,7 @@ function VoiceCard({ voice, selected, onSelect, className, ...props }: VoiceCard
       data-slot="voice-card"
       data-selected={selected}
       className={cn(
-        "group/voice relative flex items-center gap-3 rounded-xl border bg-surface p-2 pr-2.5 backdrop-blur-md transition-all hover:border-primary/50 data-[selected=true]:border-primary data-[selected=true]:bg-primary/15",
+        "group/voice relative flex min-w-0 items-center gap-1.5 rounded-xl border bg-surface p-1.5 backdrop-blur-md transition-all hover:border-primary/50 data-[selected=true]:border-primary data-[selected=true]:bg-primary/15 sm:gap-3 sm:p-2 sm:pr-2.5",
         className
       )}
       {...props}
@@ -103,15 +104,15 @@ function VoiceCard({ voice, selected, onSelect, className, ...props }: VoiceCard
         aria-pressed={selected}
         onClick={() => onSelect?.(voice)}
       />
-      <VoiceAvatar voice={voice} />
+      <VoiceAvatar voice={voice} className="size-7 text-[10px] sm:size-9 sm:text-xs" />
       <div className="pointer-events-none min-w-0 flex-1">
-        <p className="truncate text-sm font-medium">{voice.name}</p>
-        <p className="truncate text-xs text-muted-foreground">{voice.language}</p>
+        <p className="truncate text-xs font-medium sm:text-sm">{voice.name}</p>
+        <p className="truncate text-[10px] text-muted-foreground sm:text-xs">{voice.language}</p>
       </div>
       <Button
         variant="outline"
         size="icon-sm"
-        className="relative rounded-full bg-transparent dark:bg-transparent"
+        className="relative size-6 rounded-full bg-transparent dark:bg-transparent sm:size-7"
         aria-label={previewing ? `Stop ${voice.name} preview` : `Preview ${voice.name}`}
         onClick={() => setPreviewing((value) => !value)}
       >
@@ -305,25 +306,25 @@ function VoiceToolbar({ voice, onVoiceChange, onAddPause, className, ...props }:
   return (
     <div
       data-slot="voice-toolbar"
-      className={cn("flex flex-wrap items-center gap-2", className)}
+      className={cn("grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 lg:flex lg:flex-wrap lg:gap-2", className)}
       {...props}
     >
       <VoicePickerDialog value={voice} onValueChange={onVoiceChange}>
-        <Button variant="outline" size="sm" className="shrink-0 rounded-full bg-surface pl-1 backdrop-blur dark:bg-surface">
+        <Button variant="outline" size="sm" className="min-w-0 justify-start rounded-full bg-surface pl-1 backdrop-blur dark:bg-surface lg:shrink-0">
           <VoiceAvatar voice={voice} className="size-5 text-[8px] ring-0" />
-          {voice.name}
-          <span className="text-muted-foreground">{voice.language}</span>
-          <ChevronDownIcon className="text-muted-foreground" />
+          <span className="truncate">{voice.name}</span>
+          <span className="hidden text-muted-foreground sm:inline">{voice.language}</span>
+          <ChevronDownIcon className="ml-auto text-muted-foreground" />
         </Button>
       </VoicePickerDialog>
-      <div className="flex shrink-0 items-center gap-1 rounded-full border bg-surface p-0.5 backdrop-blur">
+      <div className="order-3 col-span-2 grid min-w-0 grid-cols-4 items-center rounded-full border bg-surface p-0.5 backdrop-blur lg:order-none lg:flex lg:shrink-0 lg:gap-1">
         {voiceSettings.map((setting) => (
           <DropdownMenu key={setting.id}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="xs" className="rounded-full">
-                {setting.label}
+              <Button variant="ghost" size="xs" className="min-w-0 rounded-full px-1 sm:px-2" aria-label={`${setting.label}: ${settings[setting.id]}`}>
+                <span className="truncate">{setting.label}</span>
                 {setting.id === "speed" || setting.id === "pitch" ? (
-                  <span className="text-muted-foreground">{settings[setting.id]}</span>
+                  <span className="hidden text-muted-foreground sm:inline">{settings[setting.id]}</span>
                 ) : null}
                 <ChevronDownIcon className="text-muted-foreground" />
               </Button>
@@ -344,13 +345,24 @@ function VoiceToolbar({ voice, onVoiceChange, onAddPause, className, ...props }:
           </DropdownMenu>
         ))}
       </div>
-      <div className="ml-auto flex shrink-0 gap-1">
-        <Button variant="ghost" size="xs" className="rounded-full" onClick={onAddPause}>
-          <PlusIcon /> Add pause
-        </Button>
-        <Button variant="ghost" size="xs" className="rounded-full">
-          <SpellCheckIcon /> Pronunciation
-        </Button>
+      <div role="group" aria-label="Script tools" className="ml-auto flex shrink-0 items-center rounded-full border bg-surface p-0.5 backdrop-blur">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon-xs" className="rounded-full" aria-label="Add pause" onClick={onAddPause}>
+              <PlusIcon />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Add pause</TooltipContent>
+        </Tooltip>
+        <span aria-hidden="true" className="mx-0.5 h-3.5 w-px bg-border" />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon-xs" className="rounded-full" aria-label="Pronunciation">
+              <SpellCheckIcon />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Pronunciation</TooltipContent>
+        </Tooltip>
       </div>
     </div>
   )
