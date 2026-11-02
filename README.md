@@ -108,4 +108,4 @@ installed.
 
 ## License
 
-MIT — free for personal and commercial use. See [LICENSE](LICENSE).
+Free for personal and commercial projects. No resale or redistribution. See [LICENSE](LICENSE).
